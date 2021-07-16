@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef enum {false, true } bool;
+typedef enum { false, true } bool;
 
 typedef struct
 {
@@ -73,7 +73,7 @@ int pop(stack_t* stack)
     return __INT_MAX__;
 }
 
-int peek(stack_t* s)
+int top(stack_t* s)
 {
     return s->data[s->size-1];
 }
