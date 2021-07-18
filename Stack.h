@@ -86,3 +86,11 @@ void printStack(stack_t* s)
         printf("%i ", s->data[i]);    
     printf("\n");
 }
+
+char* stackString(stack_t* s)
+{
+    char* stackString = (char*)malloc(sizeof(char) * s->size);
+    for(int i = 0; i < s->size; i++)
+        stackString[i] = s->data[i];
+    return stackString;
+}
