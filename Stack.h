@@ -87,6 +87,12 @@ void printStack(stack_t* s)
     printf("\n");
 }
 
+void deleteStack(stack_t* s)
+{
+    free(s->data);
+    free(s);
+}
+
 char* stackString(stack_t* s)
 {
     char* stackString = (char*)malloc(sizeof(char) * s->size);
