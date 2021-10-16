@@ -8,7 +8,6 @@ typedef enum
     LEFT_TO_RIGHT, RIGHT_TO_LEFT
 } Associativity;
 
-
 int isOperator(char c)
 {
     const char* operators = "+-*/^";
