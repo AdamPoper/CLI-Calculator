@@ -1,28 +1,20 @@
 #include <stdio.h>
 #include <math.h>
 #include "Stack.h"
+#include <ctype.h>
 
 typedef enum 
 {
     LEFT_TO_RIGHT, RIGHT_TO_LEFT
 } Associativity;
 
-bool isAlphaNumeric(char c)
-{
-    const char* nonAlphaNumerics = "`~!@#$%^&*()_-+=?/';:{[}]\\,<.>\"";
-    for(int i = 0; i < strlen(nonAlphaNumerics); i++)
-        if(c == nonAlphaNumerics[i])
-            return false;    
-    return true;
-}
-
-bool isOperator(char c)
+int isOperator(char c)
 {
     const char* operators = "+-*/^";
     for(int i = 0; i < strlen(operators); i++)
         if(c == operators[i])
-            return true;
-    return false;
+            return 1;
+    return 0;
 }
 
 int operatorPrecedence(char operator)
@@ -69,7 +61,7 @@ char* infixToPostfix(const char* infixExp)
     for(int i = 0; i < strlen(infixExp); i++)
     {
         char c = infixExp[i];
-        if(isAlphaNumeric(c))
+        if(isalnum(c))
             postfixExp[postfixIndex++] = c;
         
         else if(isOperator(c))            
@@ -107,12 +99,10 @@ char* infixToPostfix(const char* infixExp)
                 pop(opStack); // pop (
             }
         }      
-        //printResults(c, opStack, postfixExp);     
     }
     while(!isStackEmpty(opStack))
         postfixExp[postfixIndex++] = pop(opStack);
     
-    //printf("%s\n", postfixExp);
     deleteStack(opStack);
     return postfixExp;
 }
@@ -134,29 +124,28 @@ float evaluatePostfixExpression(const char* postfixExp)
                 case '*': 
                 {
                     int result = op1 * op2;
-                    printf("%i %c %i = %i\n", op1, c, op2, result);
+                    //printf("%i %c %i = %i\n", op1, c, op2, result);
                     push(evalStack, result);
-                    printStack(evalStack);
                 }
                 break;
                 case '+':    
                 {
                     int result = op1 + op2;
-                    printf("%i %c %i = %i\n", op1, c, op2, result);
+                    //printf("%i %c %i = %i\n", op1, c, op2, result);
                     push(evalStack, result);
                 }                
                 break;
                 case '-':   
                 {
                     int result = op2 - op1;
-                    printf("%i %c %i = %i\n", op2, c, op1, result);
+                    //printf("%i %c %i = %i\n", op2, c, op1, result);
                     push(evalStack, result);
                 }                 
                 break;
                 case '/':  
                 {
                     int result = op2 / op1;
-                    printf("%i %c %i = %i\n", op2, c, op1, result);
+                    //printf("%i %c %i = %i\n", op2, c, op1, result);
                     push(evalStack, result);
                 }                  
                 break;
@@ -179,13 +168,11 @@ float evaluatePostfixExpression(const char* postfixExp)
 
 int main(int argc, char** argv)
 {    
-    const char* inf1 = "k+L-M*N+(O^P)*W/U/V*T+Q";
-    const char* inf2 = "3*(9+(7^2))/2";
-    //const char* inf3[] = {"10", "+", "7"};
-    const char* infixExpression = inf2;
+    char infixExpression[128];
+    scanf("%s", infixExpression);
     char* postfixExp = infixToPostfix(infixExpression);
-    printf("%s\n", postfixExp);
     int result = evaluatePostfixExpression(postfixExp);
     printf("%i\n", result);
     free(postfixExp);
+    return 0;
 }

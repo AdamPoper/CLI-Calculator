@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef enum { false, true } bool;
-
 typedef struct
 {
     int* data;
@@ -11,37 +9,35 @@ typedef struct
     size_t capacity;
 } Stack;
 
-typedef Stack stack_t;
-
-stack_t* createStack(size_t cap)
+Stack* createStack(size_t cap)
 {
-    stack_t* s = (stack_t*)malloc(sizeof(stack_t));
+    Stack* s = (Stack*)malloc(sizeof(Stack));
     s->data = (int*)malloc(sizeof(int) * cap);
     s->size = 0;
     s->capacity = cap;
     return s;
 }
 
-bool isStackFull(stack_t* s)
+int isStackFull(Stack* s)
 {
     return (s->size == s->capacity);
 }
 
-bool isStackEmpty(stack_t* s)
+int isStackEmpty(Stack* s)
 {
     return (s->size == 0);
 }
 
-bool intcpy(int* dest, int* src, size_t size)
+int intcpy(int* dest, int* src, size_t size)
 {
     if(!dest || !src)
-        return false;
+        return 0;
     for(int i = 0; i < size; i++)
         dest[i] = src[i];    
-    return true;
+    return 1;
 }
 
-bool resizeStack(stack_t* s)
+int resizeStack(Stack* s)
 {
     if(isStackFull(s))
     {
@@ -52,33 +48,33 @@ bool resizeStack(stack_t* s)
         s->data = (int*)malloc(sizeof(int) * s->capacity);
         intcpy(s->data, temp, s->size+1);
         free(temp);
-        return true;
+        return 1;
     }
-    return false;
+    return 0;
 }
 
-bool push(stack_t* stack, int data)
+int push(Stack* stack, int data)
 {      
     if(isStackFull(stack))
         resizeStack(stack);
     stack->data[stack->size] = data;
     stack->size++; 
-    return true;
+    return 1;
 }
 
-int pop(stack_t* stack)
+int pop(Stack* stack)
 {
     if(!isStackEmpty(stack))
         return stack->data[--stack->size];
     return __INT_MAX__;
 }
 
-int top(stack_t* s)
+int top(Stack* s)
 {
     return s->data[s->size-1];
 }
 
-void printStack(stack_t* s)
+void printStack(Stack* s)
 {
     printf("size: %lu\n", s->size);
     printf("capacity: %lu \n", s->capacity);
@@ -87,13 +83,13 @@ void printStack(stack_t* s)
     printf("\n");
 }
 
-void deleteStack(stack_t* s)
+void deleteStack(Stack* s)
 {
     free(s->data);
     free(s);
 }
 
-char* stackString(stack_t* s)
+char* stackString(Stack* s)
 {
     char* stackString = (char*)malloc(sizeof(char) * s->size);
     for(int i = 0; i < s->size; i++)
